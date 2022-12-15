@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # modify these if you want to use a proxy
 http_proxy=
