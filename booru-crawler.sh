@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# modify these if you want to use a proxy
-http_proxy=
-https_proxy=
+# leave your proxy setting here
+http_proxy=127.0.0.1:7890
+https_proxy=127.0.0.1:7890
 
 # set download thread for aria2
 aria2_thread=1
@@ -55,7 +55,7 @@ function search_tags() {
 			do	page_tags=$((page_tags+1))
 				echo https://konachan.net/tag.json?name="${tags}"\&page\=$page_tags >> tags
 			done
-			aria2c -i tags -j ${aria2_thread} #--http-proxy=$http_proxy --https-proxy=$https_proxy
+			aria2c -i tags -j ${aria2_thread} --http-proxy=$http_proxy --https-proxy=$https_proxy
 			cat tag.*|sed 's/,/\n/g'|grep \"name|sed 's/"name":"//g;s/"//g' >> ${tags_box}
 		else
 			wget https://konachan.net/tag.json?name="${tags}" -o /dev/null -O -|sed 's/,/\n/g'|grep \"name|sed 's/"name":"//g;s/"//g' >> ${tags_box}
@@ -73,7 +73,7 @@ function search_tags() {
 			do	page_tags=$((page_tags+1))
 				echo https://yande.re/tag.json?name="${tags}"\&page\=$page_tags >> tags
 			done
-			aria2c -i tags -j ${aria2_thread} #--http-proxy=$http_proxy --https-proxy=$https_proxy
+			aria2c -i tags -j ${aria2_thread} --http-proxy=$http_proxy --https-proxy=$https_proxy
 			cat tag.*|sed 's/,/\n/g'|grep \"name|sed 's/"name":"//g;s/"//g' >> ${tags_box}
 		else
 			wget https://yande.re/tag.json?name="${tags}" -o /dev/null -O -|sed 's/,/\n/g'|grep \"name|sed 's/"name":"//g;s/"//g' >> ${tags_box}
@@ -115,7 +115,7 @@ done
 direct_links_file=`mktemp -t temp.XXXXXXXX`
 
 kdialog --msgbox "Now getting..." 2>/dev/null &
-aria2c -i page_list -j ${aria2_thread} #--http-proxy=$http_proxy --https-proxy=$https_proxy
+aria2c -i page_list -j ${aria2_thread} --http-proxy=$http_proxy --https-proxy=$https_proxy
 sed 's/{/\n{/g ; s/}]/}\n]/g' ${booru#*/}*|
 # grep -v 'rating":"q' | #exclude the 'Questionable' pics
 # grep -v 'rating":"e' | #exclude the 'Explicit' pics
